@@ -41,10 +41,10 @@
             // 
             this.lbl_srcCrncValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.lbl_srcCrncValue.AutoSize = true;
-            this.lbl_srcCrncValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
-            this.lbl_srcCrncValue.Location = new System.Drawing.Point(12, 202);
+            this.lbl_srcCrncValue.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.lbl_srcCrncValue.Location = new System.Drawing.Point(12, 204);
             this.lbl_srcCrncValue.Name = "lbl_srcCrncValue";
-            this.lbl_srcCrncValue.Size = new System.Drawing.Size(48, 17);
+            this.lbl_srcCrncValue.Size = new System.Drawing.Size(37, 13);
             this.lbl_srcCrncValue.TabIndex = 10;
             this.lbl_srcCrncValue.Text = "Value:";
             // 
@@ -52,9 +52,9 @@
             // 
             this.numTB_srcCrncValue.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.numTB_srcCrncValue.DecimalPlaces = 2;
-            this.numTB_srcCrncValue.Location = new System.Drawing.Point(64, 202);
+            this.numTB_srcCrncValue.Location = new System.Drawing.Point(55, 202);
             this.numTB_srcCrncValue.Name = "numTB_srcCrncValue";
-            this.numTB_srcCrncValue.Size = new System.Drawing.Size(63, 20);
+            this.numTB_srcCrncValue.Size = new System.Drawing.Size(72, 20);
             this.numTB_srcCrncValue.TabIndex = 1;
             this.numTB_srcCrncValue.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.numTB_srcCrncValue.ValueChanged += new System.EventHandler(this.numTB_srcCrncValue_ValueChanged);
@@ -121,6 +121,7 @@
             this.Controls.Add(this.pnl_crncRates);
             this.Controls.Add(this.numTB_srcCrncValue);
             this.Controls.Add(this.lbl_srcCrncValue);
+            this.MaximizeBox = false;
             this.MinimumSize = new System.Drawing.Size(500, 300);
             this.Name = "MainForm";
             this.Text = "Currency Converter";

@@ -85,6 +85,7 @@
             this.Controls.Add(this.btn_ok);
             this.Controls.Add(this.tBox_crncName);
             this.Controls.Add(this.label1);
+            this.MaximizeBox = false;
             this.Name = "AddCrncForm";
             this.Text = "Add Currency";
             this.ResumeLayout(false);

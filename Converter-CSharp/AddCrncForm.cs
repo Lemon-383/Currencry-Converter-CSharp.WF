@@ -17,6 +17,8 @@ namespace Currency_CSharp
         public AddCrncForm()
         {
             InitializeComponent();
+            MinimumSize = Size;
+            MaximumSize = Size;
         }
 
 
@@ -42,5 +44,6 @@ namespace Currency_CSharp
 
             DialogResult = DialogResult.OK;
         }
+
     }
 }

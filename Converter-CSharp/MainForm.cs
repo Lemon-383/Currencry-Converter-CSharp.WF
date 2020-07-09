@@ -20,8 +20,8 @@ namespace Currency_CSharp
         public MainForm()
         {
             InitializeComponent();
-            MinimumSize = new Size(Width, Height);
-            MaximumSize = new Size(Width, Height);
+            MinimumSize = Size;
+            MaximumSize = Size;
 
             selCrncId = -1;
             srcCrncValue = numTB_srcCrncValue.Value;
@@ -30,7 +30,19 @@ namespace Currency_CSharp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            LoadDataBase(databasePath);
+            if(!LoadDataBase(databasePath))
+            {
+                MessageBox.Show
+                (
+                "Failed to read the database. Default currencies will be loaded",
+                "Error",
+                MessageBoxButtons.OK
+                );
+
+                string[] defCrncs = new string[] { "USD", "EUR", "UAH", "PLN", "BYR", "CNY", "RUB" };
+                foreach (string crnc in defCrncs)
+                    AddCrnc(crnc);
+            }
         }
         
 
@@ -48,10 +60,10 @@ namespace Currency_CSharp
             {
                 pnl_crncRates.Controls[selCrncId].Enabled = true;
                 pnl_convRes.Controls[selCrncId].Enabled = true;
+                Convert(selCrncId);
             }
 
             selCrncId = cBox_srcCrnc.SelectedIndex;
-            numTB_crncRates[selCrncId].Value = 0;
             tBox_convResults[selCrncId].Text = string.Empty;
             pnl_crncRates.Controls[selCrncId].Enabled = false;
             pnl_convRes.Controls[selCrncId].Enabled = false;
@@ -75,11 +87,13 @@ namespace Currency_CSharp
                     AddCrnc(addCrncForm.crncName);
                 else
                     MessageBox.Show("Such currency has already been added", "Error", MessageBoxButtons.OK);
-            SaveDataBase(databasePath);
+
+            if (!SaveDataBase(databasePath))
+                MessageBox.Show("Failed to write database", "Error", MessageBoxButtons.OK);
         }
 
 
-        private void LoadDataBase(string path)
+        private bool LoadDataBase(string path)
         {
             StreamReader sr;
 
@@ -89,8 +103,7 @@ namespace Currency_CSharp
             }
             catch(Exception ex)
             {
-                MessageBox.Show("DataBase read error: " + ex.Message, "Error", MessageBoxButtons.OK);
-                return;
+                return false;
             }
 
             string line;
@@ -99,9 +112,10 @@ namespace Currency_CSharp
                     AddCrnc(line);
 
             sr.Close();
+            return true;
         }
 
-        private void SaveDataBase(string path)
+        private bool SaveDataBase(string path)
         {
             StreamWriter sw;
 
@@ -111,26 +125,30 @@ namespace Currency_CSharp
             }
             catch(Exception ex)
             {
-                MessageBox.Show("DataBase write error: " + ex.Message, "Error", MessageBoxButtons.OK);
-                return;
+                return false;
             }
 
             foreach (string item in currencies)
                 sw.WriteLine(item);
 
             sw.Close();
+            return true;
         }
 
-        void Convert(int trgCrncId)
+        private void Convert(int trgCrncId)
         {
-            tBox_convResults[trgCrncId].Text = 
-                string.Format("{0:0.00##}", numTB_crncRates[trgCrncId].Value * srcCrncValue);
+            decimal rate = numTB_crncRates[trgCrncId].Value;
+
+            if (rate == 0 || srcCrncValue == 0)
+                tBox_convResults[trgCrncId].Text = string.Empty;
+            else
+                tBox_convResults[trgCrncId].Text =
+                    string.Format("{0:0.00##}", rate * srcCrncValue);
         }
 
-        void AddCrnc(string name)
+        private void AddCrnc(string name)
         {
             cBox_srcCrnc.Items.Add(name);
-
 
             Label lbl_rate = new Label();
             lbl_rate.Font = new Font("Microsoft Sans Serif", 9F);
@@ -165,6 +183,7 @@ namespace Currency_CSharp
             tBox_res.Location = new Point(lbl_res.Width, 0);
             tBox_res.Size = new Size(100, 20);
             tBox_res.ReadOnly = true;
+            tBox_res.TabStop = false;
 
             Panel pnl_res = new Panel();
             pnl_res.Size = new Size(lbl_res.Width + tBox_res.Width, tBox_res.Height);
